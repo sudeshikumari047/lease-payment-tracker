@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP0046928 | Lease Manager</title>
+<style>
+:root{--bg:#f4f6fa;--panel:#fff;--ink:#182230;--muted:#687386;--line:#e4e8ef;--blue:#2457d6;--blue2:#173fa8;--teal:#139879;--amber:#e6a23c;--red:#c04444;--nav:#152238}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;font-weight:650}
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{background:#fff;width:min(400px,100%);padding:30px;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px #172b4d12}
+.login-card h1{margin:8px 0 3px}.eyebrow{color:var(--blue);font-size:11px;letter-spacing:.13em;font-weight:800;text-transform:uppercase}
+label{display:block;font-weight:650;margin:13px 0 6px}input{width:100%;padding:10px 11px;border:1px solid #cbd3df;border-radius:8px;background:#fff;color:var(--ink)}
+.primary{background:var(--blue);color:white}.primary:hover{background:var(--blue2)}.soft{background:#edf2ff;color:#214bb5}.danger{background:#fff0ef;color:var(--red);padding:7px 10px}.full{width:100%;margin-top:18px;padding:12px}
+.err{color:var(--red);font-size:12px;min-height:17px;margin-top:7px}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}
+.app{display:none;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:var(--nav);color:#fff;padding:24px 15px;display:flex;flex-direction:column;z-index:5}
+.brand{font-size:17px;font-weight:800;padding:2px 10px 22px}.brand small{display:block;font-size:10px;color:#aab8cd;font-weight:500;letter-spacing:.12em;margin-top:4px}
+.nav-label{font-size:10px;color:#91a1b9;text-transform:uppercase;letter-spacing:.12em;padding:8px 10px}
+.nav-btn{display:flex;gap:11px;align-items:center;text-align:left;width:100%;color:#d9e2ef;background:transparent;padding:11px 12px;margin:2px 0;font-weight:550}
+.nav-btn.active,.nav-btn:hover{background:#263954;color:#fff}.nav-icon{width:20px;text-align:center;font-size:16px}
+.sidebar-bottom{margin-top:auto;color:#aab8cd;font-size:11px;padding:12px 10px}
+.main{margin-left:235px;padding:28px;max-width:1600px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.topbar h1{font-size:25px;margin:0}.topbar p{margin:3px 0 0;color:var(--muted)}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:0 4px 18px #172b4d06;min-width:0}
+.kpi-label{font-size:12px;color:var(--muted)}.kpi-value{font-size:22px;font-weight:800;margin-top:5px;overflow-wrap:anywhere}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px}.gridwide{display:grid;grid-template-columns:1.25fr .75fr;gap:15px;margin-bottom:15px}
+.card h2{font-size:16px;margin:0 0 4px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.chartbox{height:245px;display:flex;align-items:center;justify-content:center;position:relative}.chartbox canvas{width:100%;height:100%}
+.donut-wrap{display:flex;align-items:center;gap:20px;min-height:210px;justify-content:center;flex-wrap:wrap}.donut{width:175px;height:175px;position:relative;flex:none}.donut svg{width:100%;height:100%;transform:rotate(-90deg)}.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.donut-center strong{font-size:20px}.donut-center span{font-size:11px;color:var(--muted)}
+.legend{display:grid;gap:10px}.legend-row{display:flex;align-items:center;gap:8px;font-size:12px}.swatch{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.progress{height:9px;background:#edf0f5;border-radius:20px;overflow:hidden;margin:12px 0 5px}.progress>div{height:100%;background:var(--teal);width:0}
+.notice{background:#fff8e8;border:1px solid #f0dfb8;color:#76520b;border-radius:10px;padding:11px 13px;font-size:12px;margin-bottom:15px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.field.fullrow{grid-column:1/-1}
+.table-wrap{overflow:auto;margin-top:12px;max-height:570px}table{border-collapse:collapse;width:100%;white-space:nowrap}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line)}th{position:sticky;top:0;background:#f8f9fb;color:var(--muted);font-size:10px;letter-spacing:.07em;text-transform:uppercase;z-index:1}
+.num{text-align:right}.amount{font-weight:700}.badge{display:inline-block;border-radius:20px;padding:3px 9px;font-size:10px;font-weight:750}.b-paid{background:#e7f7f0;color:#08734f}.b-pending{background:#fff3dd;color:#946000}.b-overdue{background:#ffeded;color:#b42318}
+.empty{text-align:center;color:var(--muted);padding:28px 8px}.actions{display:flex;gap:8px;flex-wrap:wrap}.section-note{margin:12px 0 0;font-size:12px;color:var(--muted)}
+.rate-row{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.rate-row>div{width:220px}.rate-row button{height:40px;margin-bottom:0}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}.gridwide{grid-template-columns:1fr}}
+@media(max-width:760px){.sidebar{position:static;width:auto;height:auto;padding:12px;display:block}.brand{padding:4px 8px 10px}.nav-label,.sidebar-bottom{display:none}.nav-list{display:flex;overflow:auto;gap:5px}.nav-btn{width:auto;white-space:nowrap;padding:9px 10px}.main{margin:0;padding:18px}.grid2{grid-template-columns:1fr}.topbar h1{font-size:22px}}
+@media(max-width:480px){.cards{grid-template-columns:1fr 1fr}.kpi-value{font-size:17px}.form-grid{grid-template-columns:1fr}.field.fullrow{grid-column:auto}.main{padding:12px}}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-screen">
+ <div class="login-card">
+  <div class="eyebrow">Personal finance workspace</div><h1>Lease Manager</h1><div class="muted">Policy HP0046928 · Sign in to continue</div>
+  <form id="loginForm"><label for="username">Username</label><input id="username" autocomplete="username" required>
+  <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+  <button class="primary full" type="submit">Sign in</button><div id="loginError" class="err"></div></form>
+  <p class="tiny">This is a browser-based convenience lock, not strong security. The credentials are visible in the HTML source.</p>
+ </div>
+</section>
+<div id="app" class="app">
+ <aside class="sidebar">
+  <div class="brand">LEASE MANAGER<small>POLICY HP0046928</small></div>
+  <div class="nav-label">Workspace</div>
+  <div class="nav-list">
+   <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+   <button class="nav-btn" data-page="payments"><span class="nav-icon">↕</span>Payment Management</button>
+   <button class="nav-btn" data-page="schedule"><span class="nav-icon">▤</span>Repayment Schedule</button>
+   <button class="nav-btn" data-page="analysis"><span class="nav-icon">◔</span>Financial Analysis</button>
+   <button class="nav-btn" data-page="settings"><span class="nav-icon">⚙</span>Settings</button>
+  </div>
+  <div class="sidebar-bottom">Personal lease records<br>Saved in this browser</div>
+ </aside>
+ <main class="main">
+  <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your lease position at a glance.</p></div>
+   <div class="actions"><button class="soft" id="exportBtn">Export Excel CSV</button><button class="soft" id="backupBtn">Backup</button><button class="soft" id="logoutBtn">Log out</button></div>
+  </header>
+  <section class="page active" id="page-dashboard">
+   <div class="cards">
+    <div class="card"><div class="kpi-label">Total lease facility</div><div class="kpi-value" id="kFacility">Rs. 1,800,000.00</div></div>
+    <div class="card"><div class="kpi-label">Monthly instalment</div><div class="kpi-value" id="kInstallment">Rs. 46,973.44</div></div>
+    <div class="card"><div class="kpi-label">Total recorded payments</div><div class="kpi-value" id="kPaid">Rs. 0.00</div></div>
+    <div class="card"><div class="kpi-label">Payments recorded</div><div class="kpi-value" id="kCount">0 / 54</div></div>
+   </div>
+   <div class="grid2">
+    <div class="card"><div class="card-head"><div><h2>Payment completion</h2><div class="tiny">Recorded payments vs. scheduled instalments</div></div></div>
+     <div class="donut-wrap"><div class="donut" id="completionDonut"></div><div class="legend" id="completionLegend"></div></div>
+     <div class="progress"><div id="progressBar"></div></div><div class="tiny" id="progressText">0% of instalments recorded</div>
+    </div>
+    <div class="card"><div class="card-head"><div><h2>Principal vs. interest</h2><div class="tiny">Based on the interest rate entered in Settings</div></div></div>
+     <div class="donut-wrap"><div class="donut" id="principalInterestDonut"></div><div class="legend" id="principalInterestLegend"></div></div>
+     <div class="tiny" id="interestChartNote">Enter your annual interest rate to calculate the split. No rate has been assumed.</div>
+    </div>
+   </div>
+   <div class="gridwide">
+    <div class="card"><div class="card-head"><div><h2>Principal and interest by instalment</h2><div class="tiny">Monthly repayment composition</div></div></div><div class="chartbox"><canvas id="dashboardBar"></canvas></div></div>
+    <div class="card"><h2>Lease summary</h2><div class="tiny">Current configured details</div>
+     <table><tbody>
+      <tr><td>Policy number</td><td><strong>HP0046928</strong></td></tr>
+      <tr><td>Lease facility</td><td id="summaryFacility"></td></tr>
+      <tr><td>Term</td><td>54 months</td></tr>
+      <tr><td>Due date</td><td>5th of each month</td></tr>
+      <tr><td>First payment date entered</td><td>30 Jun 2026 (as advised)</td></tr>
+      <tr><td>Estimated scheduled repayments</td><td id="summaryScheduled"></td></tr>
+      <tr><td>Estimated interest total</td><td id="summaryInterest">Enter rate in Settings</td></tr>
+     </tbody></table>
+    </div>
+   </div>
+  </section>
+  <section class="page" id="page-payments">
+   <div class="notice">A payment cannot be saved without a valid 8-digit numeric reference number. Each record is stored locally in this browser. Duplicate reference numbers trigger a confirmation.</div>
+   <div class="grid2">
+    <div class="card"><h2>Record a payment</h2><div class="tiny">Enter the actual date and transaction details.</div>
+     <form id="paymentForm">
+      <div class="form-grid">
+       <div class="field fullrow"><label for="paymentDate">Actual payment date</label><input type="date" id="paymentDate" required></div>
+       <div class="field fullrow"><label for="paymentAmount">Payment amount (LKR)</label><input type="number" id="paymentAmount" min="0.01" step="0.01" value="46973.44" required></div>
+       <div class="field fullrow"><label for="reference">Payment reference number (8 digits)</label><input id="reference" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" placeholder="e.g. 12345678" required></div>
+       <div class="field fullrow"><label for="paymentNote">Note (optional)</label><input id="paymentNote" maxlength="100" placeholder="Bank transfer, cash, etc."></div>
+      </div>
+      <button class="primary full" type="submit">＋ Record payment</button><div id="paymentError" class="err"></div>
+     </form>
+    </div>
+    <div class="card"><h2>Payment totals</h2><table><tbody>
+     <tr><td>Total recorded</td><td class="num amount" id="payTotal">Rs. 0.00</td></tr>
+     <tr><td>Number of transactions</td><td class="num" id="payCount">0</td></tr>
+     <tr><td>Instalments remaining (by count)</td><td class="num" id="payRemaining">54</td></tr>
+     <tr><td>Next scheduled due date</td><td class="num" id="nextDue">05/07/2026</td></tr>
+    </tbody></table><p class="section-note">The instalment counter counts recorded transactions. If you make partial or extra payments, check the schedule and lender statement before treating a transaction as a full instalment.</p></div>
+   </div>
+   <div class="card"><div class="card-head"><div><h2>Payment history</h2><div class="tiny">Newest payment first. Export to CSV for Excel.</div></div></div>
+    <div class="table-wrap"><table><thead><tr><th>No.</th><th>Actual date</th><th>Amount</th><th>Reference no.</th><th>Note</th><th>Action</th></tr></thead><tbody id="history"></tbody></table><div class="empty" id="historyEmpty">No payments recorded yet.</div></div>
+   </div>
+  </section>
+  <section class="page" id="page-schedule">
+   <div class="notice">The principal and interest schedule is an estimate using a reducing-balance method and the annual rate you enter in Settings. It is not a lender-issued schedule. Please compare it with your finance company's repayment schedule.</div>
+   <div class="cards">
+    <div class="card"><div class="kpi-label">Opening facility</div><div class="kpi-value">Rs. 1,800,000.00</div></div>
+    <div class="card"><div class="kpi-label">Scheduled instalment</div><div class="kpi-value">Rs. 46,973.44</div></div>
+    <div class="card"><div class="kpi-label">Total scheduled payments</div><div class="kpi-value" id="scheduleTotal">Rs. 2,536,565.76</div></div>
+    <div class="card"><div class="kpi-label">Estimated total interest</div><div class="kpi-value" id="scheduleInterest">Not calculated</div></div>
+   </div>
+   <div class="card"><div class="card-head"><div><h2>54-month repayment schedule</h2><div class="tiny">Opening balance, interest, principal and closing balance</div></div><button class="soft" id="scheduleCsv">Export schedule CSV</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Instalment</th><th>Due date</th><th>Opening balance</th><th>Interest</th><th>Principal</th><th>Instalment</th><th>Closing balance</th><th>Record status</th></tr></thead><tbody id="scheduleBody"></tbody></table><div class="empty" id="scheduleEmpty">Enter an annual interest rate in Settings to calculate the principal and interest schedule.</div></div>
+   </div>
+  </section>
+  <section class="page" id="page-analysis">
+   <div class="grid2">
+    <div class="card"><h2>Principal vs. interest totals</h2><div class="tiny">For all 54 scheduled repayments</div><div class="donut-wrap"><div class="donut" id="analysisDonut"></div><div class="legend" id="analysisLegend"></div></div></div>
+    <div class="card"><h2>Repayment composition</h2><div class="tiny">Principal and interest for selected instalments</div><div class="chartbox"><canvas id="analysisBar"></canvas></div></div>
+   </div>
+   <div class="card"><h2>Financial breakdown</h2><table><tbody>
+    <tr><td>Original lease facility</td><td class="num" id="aFacility"></td></tr>
+    <tr><td>Total scheduled repayments</td><td class="num" id="aTotal"></td></tr>
+    <tr><td>Estimated total principal</td><td class="num" id="aPrincipal"></td></tr>
+    <tr><td>Estimated total interest</td><td class="num" id="aInterest">Not calculated</td></tr>
+    <tr><td>Effective annual rate entered</td><td class="num" id="aRate">Not entered</td></tr>
+    <tr><td>Total amount recorded as paid</td><td class="num" id="aPaid"></td></tr>
+   </tbody></table><p class="section-note">The principal and interest figures are projections from the entered rate, not a statement of the actual lender balance.</p></div>
+  </section>
+  <section class="page" id="page-settings">
+   <div class="grid2">
+    <div class="card"><h2>Lease details</h2><div class="tiny">These are the details currently configured.</div><table><tbody>
+     <tr><td>Policy number</td><td>HP0046928</td></tr><tr><td>Lease facility</td><td>Rs. 1,800,000.00</td></tr><tr><td>Monthly instalment</td><td>Rs. 46,973.44</td></tr><tr><td>Term</td><td>54 months</td></tr><tr><td>Due date</td><td>5th of each month</td></tr><tr><td>Payment commencement stated</td><td>30 June 2026</td></tr>
+    </tbody></table></div>
+    <div class="card"><h2>Interest rate assumption</h2><p class="tiny">Enter the annual interest rate from your finance agreement or lender repayment schedule. This tracker uses a nominal annual rate divided by 12 and a reducing-balance calculation.</p>
+     <label for="annualRate">Annual interest rate (%)</label><input type="number" id="annualRate" min="0" max="100" step="0.01" placeholder="e.g. 16.50">
+     <button class="primary full" id="saveRate">Save rate and recalculate schedule</button><div id="rateMessage" class="err"></div>
+     <p class="section-note">Do not guess the rate. The facility amount and instalment alone may not identify the lender's exact interest method, fees or insurance treatment.</p>
+    </div>
+   </div>
+   <div class="card"><h2>Data and security</h2><p class="tiny">Records are saved in local browser storage. Use backup regularly. The login credentials are embedded in this HTML and are not secure against someone who can inspect the file. For real protection, use a password-protected device/account and keep backup files private.</p>
+    <div class="actions"><button class="soft" id="backupBtn2">Download JSON backup</button><button class="soft" id="exportBtn2">Export payments CSV</button><button class="danger" id="clearAll">Delete all payment records</button></div>
+   </div>
+  </section>
+ </main>
+</div>
+<script>
+"use strict";
+const USER="Panda",PASS="Panda@2015";
+const FACILITY=1800000,PMT=46973.44,TERM=54,POLICY="HP0046928";
+const STORAGE="leaseManager_HP0046928_v3";
+const RATEKEY=STORAGE+"_annualRate";
+const FIRST_DUE=new Date(2026,6,5); // First monthly due date after the stated 30 June 2026 start date
+let payments=[],annualRate="";
+try{const v=JSON.parse(localStorage.getItem(STORAGE)||"[]");if(Array.isArray(v))payments=v;}catch(e){}
+try{annualRate=localStorage.getItem(RATEKEY)||"";}catch(e){}
+const $=id=>document.getElementById(id);
+const money=n=>"Rs. "+Number(n||0).toLocaleString("en-LK",{minimumFractionDigits:2,maximumFractionDigits:2});
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const showDate=s=>{if(!s)return "—";let [y,m,d]=s.split("-");return `${d}/${m}/${y}`};
+const dueAt=i=>{let d=new Date(FIRST_DUE);d.setMonth(d.getMonth()+i);return iso(d)};
+function savePayments(){localStorage.setItem(STORAGE,JSON.stringify(payments));renderAll()}
+function makeSchedule(){
+ if(annualRate===""||!Number.isFinite(Number(annualRate))||Number(annualRate)<0)return null;
+ const r=Number(annualRate)/1200;let bal=FACILITY,rows=[];
+ for(let i=0;i<TERM;i++){
+  let interest=bal*r,principal=PMT-interest,instalment=PMT;
+  if(i===TERM-1){principal=bal;instalment=principal+interest;}
+  let closing=Math.max(0,bal-principal);
+  rows.push({no:i+1,due:dueAt(i),opening:bal,interest,principal,instalment,closing});
+  bal=closing;
+ }
+ return rows;
+}
+function donut(id,legendId,values,labels,colors,centerLabel){
+ const total=values.reduce((a,b)=>a+b,0);
+ const el=$(id),leg=$(legendId);
+ if(!total||!Number.isFinite(total)){el.innerHTML='<div class="donut-center"><strong>—</strong><span>No data</span></div>';leg.innerHTML=labels.map((l,i)=>`<div class="legend-row"><i class="swatch" style="background:${colors[i]}"></i>${l}: not available</div>`).join("");return}
+ let offset=0,circles="";
+ values.forEach((v,i)=>{let dash=(v/total)*314.159;circles+=`<circle cx="60" cy="60" r="50" fill="none" stroke="${colors[i]}" stroke-width="17" stroke-dasharray="${dash} ${314.159-dash}" stroke-dashoffset="${-offset}"/>`;offset+=dash;});
+ el.innerHTML=`<svg viewBox="0 0 120 120" aria-label="Doughnut chart">${circles}</svg><div class="donut-center"><strong>${centerLabel||Math.round(values[0]/total*100)+"%"}</strong><span>${money(total)}</span></div>`;
+ leg.innerHTML=values.map((v,i)=>`<div class="legend-row"><i class="swatch" style="background:${colors[i]}"></i><span>${labels[i]}<br><b>${money(v)}</b> (${(v/total*100).toFixed(1)}%)</span></div>`).join("");
+}
+function drawStacked(canvasId,rows){
+ const c=$(canvasId);if(!c)return;const rect=c.getBoundingClientRect(),w=Math.max(300,rect.width),h=245,dpr=window.devicePixelRatio||1;
+ c.width=w*dpr;c.height=h*dpr;const ctx=c.getContext("2d");ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ const pad={l:43,r:12,t:12,b:30},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+ if(!rows){ctx.fillStyle="#687386";ctx.font="13px Arial";ctx.fillText("Enter annual interest rate in Settings to view chart.",12,110);return}
+ const max=Math.max(...rows.map(x=>x.instalment))*1.12||1;ctx.font="10px Arial";ctx.fillStyle="#687386";ctx.strokeStyle="#e7ebf1";
+ for(let k=0;k<=4;k++){let y=pad.t+ch*k/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillText((max*(1-k/4)/1000).toFixed(0)+"k",3,y+3)}
+ const step=cw/rows.length,bw=Math.max(2,step*.66);
+ rows.forEach((r,i)=>{let x=pad.l+i*step+(step-bw)/2,ph=r.principal/max*ch,ih=r.interest/max*ch;ctx.fillStyle="#2457d6";ctx.fillRect(x,pad.t+ch-ph,bw,ph);ctx.fillStyle="#e6a23c";ctx.fillRect(x,pad.t+ch-ph-ih,bw,ih)});
+ ctx.fillStyle="#687386";ctx.fillText("Instalments 1–54",pad.l,h-7);
+}
+function renderHistory(){
+ const body=$("history");body.innerHTML="";$("historyEmpty").style.display=payments.length?"none":"block";
+ [...payments].sort((a,b)=>b.date.localeCompare(a.date)||b.created-a.created).forEach((p,i)=>{
+  const tr=document.createElement("tr");
+  [i+1,showDate(p.date),money(p.amount),p.reference,p.note||"—"].forEach((v,j)=>{let td=document.createElement("td");td.textContent=v;if(j===2)td.className="amount";tr.appendChild(td)});
+  let td=document.createElement("td"),btn=document.createElement("button");btn.className="danger";btn.textContent="Delete";btn.onclick=()=>{if(confirm("Delete this payment record?")){payments=payments.filter(x=>x.id!==p.id);savePayments()}};td.appendChild(btn);tr.appendChild(td);body.appendChild(tr);
+ });
+}
+function renderSchedule(rows){
+ const body=$("scheduleBody");body.innerHTML="";
+ if(!rows){$("scheduleEmpty").style.display="block";return}
+ $("scheduleEmpty").style.display="none";
+ rows.forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  const status=i<payments.length?'<span class="badge b-paid">Recorded</span>':(r.due<iso(new Date())?'<span class="badge b-overdue">Overdue</span>':'<span class="badge b-pending">Pending</span>');
+  [r.no,showDate(r.due),money(r.opening),money(r.interest),money(r.principal),money(r.instalment),money(r.closing)].forEach((v,j)=>{let td=document.createElement("td");td.textContent=v;if(j>1)td.className="num";tr.appendChild(td)});
+  let td=document.createElement("td");td.innerHTML=status;tr.appendChild(td);body.appendChild(tr);
+ });
+}
+function renderAll(){
+ const paid=payments.reduce((s,p)=>s+Number(p.amount),0),count=payments.length,rows=makeSchedule(),totalSchedule=PMT*TERM;
+ $("kPaid").textContent=money(paid);$("kCount").textContent=count+" / "+TERM;
+ $("payTotal").textContent=money(paid);$("payCount").textContent=count;$("payRemaining").textContent=Math.max(0,TERM-count);
+ $("nextDue").textContent=showDate(dueAt(Math.min(count,TERM-1)));
+ $("summaryFacility").textContent=money(FACILITY);$("summaryScheduled").textContent=money(totalSchedule);
+ $("aFacility").textContent=money(FACILITY);$("aTotal").textContent=money(totalSchedule);$("aPaid").textContent=money(paid);
+ let pct=Math.min(100,count/TERM*100);$("progressBar").style.width=pct+"%";$("progressText").textContent=`${pct.toFixed(1)}% of ${TERM} instalments recorded`;
+ donut("completionDonut","completionLegend",[Math.min(count,TERM),Math.max(0,TERM-count)],["Instalments recorded","Instalments remaining"],["#139879","#dce3ed"],count+"/"+TERM);
+ if(rows){
+  const p=rows.reduce((s,x)=>s+x.principal,0),it=rows.reduce((s,x)=>s+x.interest,0);
+  donut("principalInterestDonut","principalInterestLegend",[p,it],["Principal","Interest"],["#2457d6","#e6a23c"],"P + I");
+  donut("analysisDonut","analysisLegend",[p,it],["Principal","Interest"],["#2457d6","#e6a23c"],"P + I");
+  $("interestChartNote").textContent="Estimated reducing-balance split based on your saved annual rate.";
+  $("scheduleInterest").textContent=money(it);$("summaryInterest").textContent=money(it);$("aInterest").textContent=money(it);$("aPrincipal").textContent=money(p);
+  $("aRate").textContent=Number(annualRate).toFixed(2)+"%";
+ }else{
+  donut("principalInterestDonut","principalInterestLegend",[],["Principal","Interest"],["#2457d6","#e6a23c"]);
+  donut("analysisDonut","analysisLegend",[],["Principal","Interest"],["#2457d6","#e6a23c"]);
+  $("interestChartNote").textContent="Enter your annual interest rate in Settings. The chart will then calculate the estimated split.";
+  $("scheduleInterest").textContent="Not calculated";$("summaryInterest").textContent="Enter rate in Settings";$("aInterest").textContent="Not calculated";$("aPrincipal").textContent="Not calculated";$("aRate").textContent="Not entered";
+ }
+ drawStacked("dashboardBar",rows);drawStacked("analysisBar",rows);renderHistory();renderSchedule(rows);
+}
+const pageInfo={dashboard:["Dashboard","Your lease position at a glance."],payments:["Payment Management","Record and review your lease payments."],schedule:["Repayment Schedule","View estimated principal and interest by month."],analysis:["Financial Analysis","Explore the principal and interest composition."],settings:["Settings","Lease assumptions, interest rate and data controls."]};
+function showPage(name){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$("page-"+name).classList.add("active");document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.page===name));$("pageTitle").textContent=pageInfo[name][0];$("pageSubtitle").textContent=pageInfo[name][1];if(name==="dashboard"||name==="analysis")renderAll()}
+document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();if($("username").value===USER&&$("password").value===PASS){$("loginScreen").style.display="none";$("app").style.display="block";sessionStorage.setItem("leaseManagerAuth","yes");$("loginError").textContent="";renderAll()}else $("loginError").textContent="Incorrect username or password."});
+function logout(){$("app").style.display="none";$("loginScreen").style.display="grid";$("password").value="";sessionStorage.removeItem("leaseManagerAuth")}
+$("logoutBtn").onclick=logout;
+if(sessionStorage.getItem("leaseManagerAuth")==="yes"){$("loginScreen").style.display="none";$("app").style.display="block"}
+$("paymentDate").value=iso(new Date());$("annualRate").value=annualRate;
+$("reference").addEventListener("input",e=>e.target.value=e.target.value.replace(/\D/g,"").slice(0,8));
+$("paymentForm").addEventListener("submit",e=>{
+ e.preventDefault();$("paymentError").textContent="";
+ const date=$("paymentDate").value,amount=Number($("paymentAmount").value),ref=$("reference").value.trim(),note=$("paymentNote").value.trim();
+ if(!date){$("paymentError").textContent="Payment date is required.";return}
+ if(!Number.isFinite(amount)||amount<=0){$("paymentError").textContent="Enter a valid payment amount.";return}
+ if(!/^\d{8}$/.test(ref)){$("paymentError").textContent="A payment reference number of exactly 8 digits is compulsory.";return}
+ if(payments.some(p=>p.reference===ref)&&!confirm("This reference number already exists. Record it again?"))return;
+ if(payments.length>=TERM&&!confirm("You have already recorded 54 transactions. Add another?"))return;
+ payments.push({id:Date.now()+"-"+Math.random().toString(16).slice(2),date,amount,reference:ref,note,created:Date.now()});
+ savePayments();$("paymentAmount").value=PMT.toFixed(2);$("reference").value="";$("paymentNote").value="";
+});
+$("saveRate").onclick=()=>{
+ const v=$("annualRate").value.trim();
+ if(v===""||!Number.isFinite(Number(v))||Number(v)<0||Number(v)>100){$("rateMessage").textContent="Enter a valid annual rate between 0 and 100.";return}
+ annualRate=String(Number(v));localStorage.setItem(RATEKEY,annualRate);$("rateMessage").textContent="Rate saved. Estimated schedule and charts updated.";renderAll();
+};
+function csvEscape(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function exportPayments(){
+ const rows=[["Payment No.","Actual Payment Date","Amount (LKR)","Reference No.","Note"],...payments.slice().sort((a,b)=>a.date.localeCompare(b.date)).map((p,i)=>[i+1,p.date,p.amount.toFixed(2),p.reference,p.note||""])];
+ download("HP0046928_payment_history.csv","\uFEFF"+rows.map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8");
+}
+function exportSchedule(){
+ const rows=makeSchedule();if(!rows){alert("Enter the annual interest rate in Settings before exporting the principal and interest schedule.");return}
+ const data=[["Instalment No.","Due Date","Opening Balance","Interest","Principal","Instalment","Closing Balance"],...rows.map(r=>[r.no,r.due,r.opening.toFixed(2),r.interest.toFixed(2),r.principal.toFixed(2),r.instalment.toFixed(2),r.closing.toFixed(2)])];
+ download("HP0046928_repayment_schedule.csv","\uFEFF"+data.map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8");
+}
+function backup(){download("HP0046928_lease_backup.json",JSON.stringify({policyNo:POLICY,facility:FACILITY,monthlyInstallment:PMT,termMonths:TERM,annualInterestRate:annualRate||null,payments},null,2),"application/json")}
+$("exportBtn").onclick=exportPayments;$("exportBtn2").onclick=exportPayments;$("scheduleCsv").onclick=exportSchedule;$("backupBtn").onclick=backup;$("backupBtn2").onclick=backup;
+$("clearAll").onclick=()=>{if(confirm("Permanently delete all payment records stored in this browser? Download a backup first if needed.")){payments=[];savePayments()}};
+window.addEventListener("resize",()=>{if($("app").style.display!=="none")renderAll()});
+renderAll();
+</script>
+</body>
+</html>
